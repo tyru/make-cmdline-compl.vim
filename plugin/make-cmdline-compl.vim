@@ -56,7 +56,8 @@ command! -bang -nargs=* -complete=customlist,MakeCmdlineComplete
 
 " Replace builtin Ex commands using altercmd.vim
 " if altercmd.vim was installed.
-if globpath(&rtp, 'autoload/altercmd.vim') != ''
+if !get(g:, 'make_compl_no_altercmds')
+\   && globpath(&rtp, 'autoload/altercmd.vim') != ''
     call altercmd#load()
     AlterCommand mak[e] Make
     AlterCommand lmak[e] LMake
