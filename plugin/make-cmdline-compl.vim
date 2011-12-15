@@ -22,9 +22,15 @@ function! s:parse_makefile()
     try   | let lines = readfile(s:get_makefile())
     catch | return [] | endtry
 
+    " Tasks in Makefile.
     " TODO: More strictly?
     let rx = '^[^:]\+\ze:'
-    return filter(map(lines, 'matchstr(v:val, rx)'), 'v:val !=# ""')
+    let cands = filter(map(lines, 'matchstr(v:val, rx)'), 'v:val !=# ""')
+
+    " Target files in current directory.
+    let cands += split(glob('*', 0), '\n')
+
+    return cands
 endfunction
 
 let s:is_windows = has('win16') || has('win32') || has('win64')
